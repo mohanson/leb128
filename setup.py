@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name='leb128',
-    version='1.0.0',
+    version='1.0.1',
     url='https://github.com/mohanson/leb128',
     license='MIT',
     author='Mohanson',
