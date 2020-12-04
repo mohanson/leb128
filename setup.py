@@ -5,7 +5,7 @@ with open('README.md', 'r') as f:
 
 setuptools.setup(
     name='leb128',
-    version='1.0.3',
+    version='1.0.4',
     url='https://github.com/mohanson/leb128',
     license='MIT',
     author='Mohanson',
