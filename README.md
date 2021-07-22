@@ -6,7 +6,7 @@ LEB128 or Little Endian Base 128 is a form of variable-length code compression u
 $ pip3 install leb128
 ```
 
-`leb128` is used in [pywasm](https://github.com/mohanson/pywasm), which the WebAssembly virtual machine.
+`leb128` has been used in  [pywasm](https://github.com/mohanson/pywasm) and [emscripten](https://github.com/emscripten-core/emscripten).
 
 # Example
 
