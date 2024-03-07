@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "leb128"
+version = "1.0.6"
+authors = [
+  { name="Mohanson", email="mohanson@outlook.com" },
+]
+description = "LEB128(Little Endian Base 128)"
+readme = "README.md"
+license = { file = "LICENSE" }
+dependencies = []
+
+[project.urls]
+homepage = "https://github.com/mohanson/leb128"
