@@ -33,7 +33,7 @@ class _U:
         return r
 
     @staticmethod
-    def decode_reader(r: typing.BinaryIO) -> (int, int):
+    def decode_reader(r: typing.BinaryIO) -> typing.Tuple[int, int]:
         """
         Decode the unsigned leb128 encoded from a reader, it will return two values, the actual number and the number
         of bytes read.
@@ -71,7 +71,7 @@ class _I:
         return r
 
     @staticmethod
-    def decode_reader(r: typing.BinaryIO) -> (int, int):
+    def decode_reader(r: typing.BinaryIO) -> typing.Tuple[int, int]:
         """
         Decode the signed leb128 encoded from a reader, it will return two values, the actual number and the number
         of bytes read.
