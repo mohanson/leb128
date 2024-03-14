@@ -6,7 +6,7 @@ LEB128 or Little Endian Base 128 is a form of variable-length code compression u
 $ pip3 install leb128
 ```
 
-`leb128` has been used in  [pywasm](https://github.com/mohanson/pywasm) and [emscripten](https://github.com/emscripten-core/emscripten).
+`leb128` has been used in [pywasm](https://github.com/mohanson/pywasm) and [emscripten](https://github.com/emscripten-core/emscripten).
 
 # Example
 
@@ -24,17 +24,6 @@ assert leb128.i.encode(-12345) == bytearray([0xc7, 0x9f, 0x7f])
 assert leb128.i.decode(bytearray([0xc7, 0x9f, 0x7f])) == -12345
 assert leb128.i.decode_reader(io.BytesIO(bytearray([0xc7, 0x9f, 0x7f]))) == (-12345, 3)
 ```
-
-# Performance
-
-Since I used the most optimized algorithm, it is likely to be the fastest among all pure Python implementations of leb128. The detailed results can refer to the table, which is the result of using a very low-performance CPU.
-
-|          Case          | Duration |
-| ---------------------- | -------- |
-| U encode 1000000 times | 0.865 s  |
-| U decode 1000000 times | 0.808 s  |
-| I encode 1000000 times | 0.762 s  |
-| I decode 1000000 times | 0.835 s  |
 
 # License
 
