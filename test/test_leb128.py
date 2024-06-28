@@ -1,6 +1,6 @@
 import io
-
 import leb128
+import pytest
 
 
 def test_minimal():
@@ -14,12 +14,21 @@ def test_minimal():
     for case_arg, case_out in [
         [0, bytearray([0x00])],
         [624485, bytearray([0xe5, 0x8e, 0x26])],
-        [-123456, bytearray([0xc0, 0xbb, 0x78])],
+        [-12345, bytearray([0xc7, 0x9f, 0x7f])],
     ]:
         assert leb128.i.encode(case_arg) == case_out
         assert leb128.i.decode(case_out) == case_arg
         assert leb128.i.decode_reader(io.BytesIO(case_out)) == (case_arg, len(case_out))
     print(f'test_minimal')
+
+
+def test_eof():
+    reader = io.BytesIO(bytearray())
+    with pytest.raises(EOFError):
+        leb128.u.decode_reader(reader)
+    reader = io.BytesIO(bytearray())
+    with pytest.raises(EOFError):
+        leb128.i.decode_reader(reader)
 
 
 def test_u():
