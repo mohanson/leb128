@@ -26,7 +26,7 @@ class _U:
 
     @staticmethod
     def decode(b: bytearray) -> int:
-        """Decode the unsigned leb128 encoded bytearray"""
+        """Decode the unsigned leb128 encoded bytearray."""
         r = 0
         for i, e in enumerate(b):
             r = r + ((e & 0x7f) << (i * 7))
@@ -65,7 +65,7 @@ class _I:
 
     @staticmethod
     def decode(b: bytearray) -> int:
-        """Decode the signed leb128 encoded bytearray"""
+        """Decode the signed leb128 encoded bytearray."""
         r = 0
         for i, e in enumerate(b):
             r = r + ((e & 0x7f) << (i * 7))
