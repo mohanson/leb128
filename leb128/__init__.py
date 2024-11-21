@@ -35,12 +35,8 @@ class _U:
             r.append(0x80 | byte)
 
     @staticmethod
-    def decode(b: bytearray, *, check_empty: bool = False) -> int:
+    def decode(b: bytearray) -> int:
         """Decode the unsigned leb128 encoded bytearray."""
-
-        if check_empty and not b:
-            msg = f"cannot decode an empty bytearray {b}"
-            raise Leb128Error(msg)
 
         r = 0
         for i, e in enumerate(b):
@@ -85,12 +81,8 @@ class _I:
             r.append(0x80 | byte)
 
     @staticmethod
-    def decode(b: bytearray, *, check_empty: bool = False) -> int:
+    def decode(b: bytearray) -> int:
         """Decode the signed leb128 encoded bytearray."""
-
-        if check_empty and not b:
-            msg = f"cannot decode an empty bytearray {b}"
-            raise Leb128Error(msg)
 
         r = 0
         for i, e in enumerate(b):
