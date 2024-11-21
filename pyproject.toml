@@ -1,6 +1,6 @@
 [project]
 name = "leb128"
-version = "1.0.9"
+version = "1.0.8"
 description = "LEB128 (Little Endian Base 128)"
 authors = [
     {name = "Mohanson", email = "mohanson@outlook.com"},
