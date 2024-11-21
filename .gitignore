@@ -1,4 +1,13 @@
-/.pytest_cache
+# Python specific
+__pycache__
 /build
 /dist
+
+# virtual environments
+.venv
+
+.pdm-python
+
+.pytest_cache
+
 /leb128.egg-info/
