@@ -9,5 +9,6 @@ __pycache__
 .pdm-python
 
 .pytest_cache
+.ruff_cache
 
 /leb128.egg-info/
