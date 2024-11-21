@@ -1,8 +1,21 @@
 import io
+from pathlib import Path
 
 import pytest
 
 from leb128 import i, u
+
+
+CASE_FILES_DIR = Path(__file__).parent / "case_files"
+
+I_CASE_FILE = CASE_FILES_DIR / "i_case.txt"
+U_CASE_FILE = CASE_FILES_DIR / "u_case.txt"
+
+
+def _assert_codec(codec, in_, out) -> None:
+    assert codec.encode(in_) == out
+    assert codec.decode(out) == in_
+    assert codec.decode_reader(io.BytesIO(out)) == (in_, len(out))
 
 
 @pytest.mark.parametrize(
@@ -13,9 +26,7 @@ from leb128 import i, u
     ],
 )
 def test_unsigned_minimal(arg: int, ans: bytearray):
-    assert u.encode(arg) == ans
-    assert u.decode(ans) == arg
-    assert u.decode_reader(io.BytesIO(ans)) == (arg, len(ans))
+    _assert_codec(u, arg, ans)
 
 
 @pytest.mark.parametrize(
@@ -27,9 +38,7 @@ def test_unsigned_minimal(arg: int, ans: bytearray):
     ],
 )
 def test_signed_minimal(arg: int, ans: bytearray):
-    assert i.encode(arg) == ans
-    assert i.decode(ans) == arg
-    assert i.decode_reader(io.BytesIO(ans)) == (arg, len(ans))
+    _assert_codec(i, arg, ans)
 
 
 @pytest.mark.parametrize("lebject", [i, u])
@@ -40,27 +49,19 @@ def test_eof(lebject):
         lebject.decode_reader(reader)
 
 
-def test_u():
-    with open("./test/u_case.txt") as f:
+@pytest.mark.parametrize(
+    ("case_filepath", "leb"),
+    [
+        (I_CASE_FILE, i),
+        (U_CASE_FILE, u),
+    ],
+)
+def test_case_files(case_filepath: Path, leb):
+    with open(case_filepath) as f:
         for line in f:
             line = line.rstrip()
             seps = line.split()
             number = int(seps[0])
             binarr = bytearray.fromhex(seps[1])
 
-            assert u.encode(number) == binarr
-            assert u.decode(binarr) == number
-            assert u.decode_reader(io.BytesIO(binarr)) == (number, len(binarr))
-
-
-def test_i():
-    with open("./test/i_case.txt") as f:
-        for line in f:
-            line = line.rstrip()
-            seps = line.split()
-            number = int(seps[0])
-            binarr = bytearray.fromhex(seps[1])
-
-            assert i.encode(number) == binarr
-            assert i.decode(binarr) == number
-            assert i.decode_reader(io.BytesIO(binarr)) == (number, len(binarr))
+            _assert_codec(leb, number, binarr)
