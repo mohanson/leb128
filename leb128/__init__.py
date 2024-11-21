@@ -10,14 +10,24 @@ binary encoding for all integer literals.
 import typing
 
 
+class Leb128Error(Exception):
+    pass
+
+
 class _U:
+    """Unsigned LEB128 codec."""
+
     @staticmethod
     def encode(i: int) -> bytearray:
         """Encode the int i using unsigned leb128 and return the encoded bytearray."""
-        assert i >= 0
+
+        if i < 0:
+            msg = f"{i} < 0"
+            raise Leb128Error(msg)
+
         r = []
         while True:
-            byte = i & 0x7f
+            byte = i & 0x7F
             i = i >> 7
             if i == 0:
                 r.append(byte)
@@ -25,19 +35,27 @@ class _U:
             r.append(0x80 | byte)
 
     @staticmethod
-    def decode(b: bytearray) -> int:
+    def decode(b: bytearray, *, check_empty: bool = False) -> int:
         """Decode the unsigned leb128 encoded bytearray."""
+
+        if check_empty and not b:
+            msg = f"cannot decode an empty bytearray {b}"
+            raise Leb128Error(msg)
+
         r = 0
         for i, e in enumerate(b):
-            r = r + ((e & 0x7f) << (i * 7))
+            r = r + ((e & 0x7F) << (i * 7))
         return r
 
     @staticmethod
     def decode_reader(r: typing.BinaryIO) -> typing.Tuple[int, int]:
+        """Decode the unsigned leb128 encoded from a reader.
+
+        It will return two values:
+        - the actual number;
+        - the number of bytes read.
         """
-        Decode the unsigned leb128 encoded from a reader, it will return two values, the actual number and the number
-        of bytes read.
-        """
+
         a = bytearray()
         while True:
             b = r.read(1)
@@ -51,12 +69,15 @@ class _U:
 
 
 class _I:
+    """Signed LEB128 codec."""
+
     @staticmethod
     def encode(i: int) -> bytearray:
         """Encode the int i using signed leb128 and return the encoded bytearray."""
+
         r = []
         while True:
-            byte = i & 0x7f
+            byte = i & 0x7F
             i = i >> 7
             if (i == 0 and byte & 0x40 == 0) or (i == -1 and byte & 0x40 != 0):
                 r.append(byte)
@@ -64,21 +85,29 @@ class _I:
             r.append(0x80 | byte)
 
     @staticmethod
-    def decode(b: bytearray) -> int:
+    def decode(b: bytearray, *, check_empty: bool = False) -> int:
         """Decode the signed leb128 encoded bytearray."""
+
+        if check_empty and not b:
+            msg = f"cannot decode an empty bytearray {b}"
+            raise Leb128Error(msg)
+
         r = 0
         for i, e in enumerate(b):
-            r = r + ((e & 0x7f) << (i * 7))
+            r = r + ((e & 0x7F) << (i * 7))
         if e & 0x40 != 0:
-            r |= - (1 << (i * 7) + 7)
+            r |= -(1 << (i * 7) + 7)
         return r
 
     @staticmethod
     def decode_reader(r: typing.BinaryIO) -> typing.Tuple[int, int]:
+        """Decode the signed leb128 encoded from a reader.
+
+        It will return two values:
+        - the actual number
+        - the number of bytes read.
         """
-        Decode the signed leb128 encoded from a reader, it will return two values, the actual number and the number
-        of bytes read.
-        """
+
         a = bytearray()
         while True:
             b = r.read(1)
