@@ -19,7 +19,6 @@ def test_minimal():
         assert leb128.i.encode(case_arg) == case_out
         assert leb128.i.decode(case_out) == case_arg
         assert leb128.i.decode_reader(io.BytesIO(case_out)) == (case_arg, len(case_out))
-    print(f'test_minimal')
 
 
 def test_eof():
@@ -44,7 +43,6 @@ def test_u():
             assert leb128.u.decode(binarr) == number
             assert leb128.u.decode_reader(io.BytesIO(binarr)) == (number, len(binarr))
             n += 1
-    print(f'test_u: {n} case')
 
 
 def test_i():
@@ -60,10 +58,10 @@ def test_i():
             assert leb128.i.decode(binarr) == number
             assert leb128.i.decode_reader(io.BytesIO(binarr)) == (number, len(binarr))
             n += 1
-    print(f'test_i: {n} case')
 
 
 if __name__ == '__main__':
     test_minimal()
+    test_eof()
     test_u()
     test_i()
