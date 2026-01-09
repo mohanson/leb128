@@ -3,10 +3,8 @@
 LEB128 or Little Endian Base 128 is a form of variable-length code compression used to store an arbitrarily large integer in a small number of bytes. LEB128 is used in the DWARF debug file format and the WebAssembly binary encoding for all integer literals.
 
 ```sh
-$ pip3 install leb128
+$ pip install leb128
 ```
-
-`leb128` has been used in [pywasm](https://github.com/mohanson/pywasm) and [emscripten](https://github.com/emscripten-core/emscripten).
 
 # Example
 
